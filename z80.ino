@@ -1,7 +1,19 @@
 // govern a Z80 from an Arduino
 
 bool rd;
-int spd = 20; //clock speed in ms delays
+int spd = 400; //clock speed in ms delays
+byte code[] {
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0xc3, 0x04, 0x00,
+};
 
 void setup() {
   // use C (analog in) port as Control Bus
@@ -16,6 +28,7 @@ void setup() {
   // DDRD = DDRD | B11111100; 
   DDRD = B11111111;
   PORTD = B00000000;
+  //PORTD = B11111111;
   // use B port as Address bus
   DDRB = B00000000;
   Serial.begin(9600);
@@ -35,10 +48,20 @@ void loop() {
   delay(spd);
   digitalWrite(A5, LOW);
   rd = digitalRead(A4);
-  if (rd) {
-    Serial.print(PINB);
-    Serial.print(" ");
-    Serial.println(rd);
-  };
+  Serial.print("rd: ");  
+  Serial.print(rd);
+  Serial.print(", addr:  ");
+  Serial.print(PINB);
+  if (!rd) {
+    DDRD = B11111111;
+    PORTD = code[PINB];
+    Serial.print(", data: ");
+    Serial.println(code[PINB]);
+  }
+  else {
+    DDRD = B00000000;
+    PORTD = B00000000;
+  }
   delay(spd);
+  Serial.println();
 }
