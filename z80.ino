@@ -1,16 +1,9 @@
 // govern a Z80 from an Arduino
+// the z80 code sits as an array in the following file
+#include "z80_code.h"
 
 bool rd, mreq;
 int spd = 100; //clock speed in ms delays
-// endless loop lingering around 0010 0000 0000 0000
-// refresh will blink address bus further
-byte code[] {
-  0x00,
-  0x00,
-  0x00,
-  0x18,
-  0xFE
-};
 
 void setup() {
   // use C (analog in) port as Control Bus
