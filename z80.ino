@@ -1,5 +1,5 @@
 // govern a Z80 from an Arduino
-// the z80 code sits as an array in the following file
+// the z80 is stored in a array, see
 #include "z80_code.h"
 
 bool rd, mreq;
