@@ -2,7 +2,7 @@
 
 import sys
 import getopt
-from subprocess import call
+from subprocess import check_output, CalledProcessError
 import binascii
 
 OUTPUTFILE_NAME = 'z80_code.h'
@@ -42,15 +42,19 @@ def main(argv):
             outputfile = arg
 
     binfile_name = '{}.bin'.format(inputfile.split('.')[0])
-    print 'Input file:', inputfile
-    call(["z80asm", inputfile, "-o", binfile_name])
-    print 'Binary file:', binfile_name
-    with open(binfile_name, 'rb') as f:
-        content = f.read()
-    coded_code = bin_to_c_array(content)
-    with open(OUTPUTFILE_NAME, 'w') as f:
-        f.write(TEMPLATE % coded_code)
-    print 'Arduino C array:', OUTPUTFILE_NAME
+    print '\nInput file:', inputfile
+    try:
+        check_output(["z80asm", inputfile, "-o", binfile_name])
+        print 'Binary file:', binfile_name
+        with open(binfile_name, 'rb') as f:
+            content = f.read()
+        coded_code = bin_to_c_array(content)
+        with open(OUTPUTFILE_NAME, 'w') as f:
+            f.write(TEMPLATE % coded_code)
+        print 'Arduino C array: {}\n\nBuild successful\n'.format(
+            OUTPUTFILE_NAME)
+    except CalledProcessError:
+        print '\nThere have been errors in your z80 code.\n'
 
 if __name__ == "__main__":
     main(sys.argv[1:])
