@@ -8,9 +8,7 @@ There is actually a Z80 assembler in the universe repos!!!
 sudo apt-get install z80asm 
 ```
 
-There is also a deassembler for existing binaries (z80dasm).
-
-will work on Ubuntu. Otherwise make sure z80asm is in your executable path.
+will work on Ubuntu. Otherwise make sure z80asm is in your executable path. There is also a de-assembler for binaries (z80dasm).
 
 ***Assemble and generate Arduino code***
 
