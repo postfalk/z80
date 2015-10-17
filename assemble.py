@@ -5,10 +5,10 @@ import getopt
 from subprocess import call
 import binascii
 
-OUTPUTFILE = 'z80_code_test.h'
+OUTPUTFILE_NAME = 'z80_code.h'
 TEMPLATE = (
     '#include <Arduino.h>\n'
-    '#ifndef codebase\n'
+    '#ifndef contentdebase\n'
     '#define codebase\n\n'
     'codebase byte codebase[] {\n'
     '%s'
@@ -16,8 +16,13 @@ TEMPLATE = (
     '#endif'
 )
 
-def bin_to_code(bin):
-    pass
+def bin_to_c_array(bin):
+    hexstring = binascii.hexlify(bin)
+    ret = ''
+    for i in range(0, len(hexstring), 2):
+        ret += '0x{},\n'.format(hexstring[i:i+2])
+    ret = ret[0:-2]
+    return ret
 
 def main(argv):
     inputfile = ''
@@ -35,20 +40,17 @@ def main(argv):
             inputfile = arg
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-    binfile_name = '{}.bin'.format(inputfile.split('.')[0])
-    call(["z80asm", inputfile, "-o", binfile_name])
 
+    binfile_name = '{}.bin'.format(inputfile.split('.')[0])
+    print 'Input file:', inputfile
+    call(["z80asm", inputfile, "-o", binfile_name])
+    print 'Binary file:', binfile_name
     with open(binfile_name, 'rb') as f:
         content = f.read()
-        hexstring = binascii.hexlify(content)
-
-    f = open(OUTPUTFILE, 'w')
-    f.write(TEMPLATE % '  0x00')
-    f.close()
-
-
-    # print 'Input file is "', inputfile
-    # print 'Output file is "', outputfile
+    coded_code = bin_to_c_array(content)
+    with open(OUTPUTFILE_NAME, 'w') as f:
+        f.write(TEMPLATE % coded_code)
+    print 'Arduino C array:', OUTPUTFILE_NAME
 
 if __name__ == "__main__":
     main(sys.argv[1:])
