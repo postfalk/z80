@@ -8,9 +8,9 @@ import binascii
 OUTPUTFILE_NAME = 'z80_code.h'
 TEMPLATE = (
     '#include <Arduino.h>\n'
-    '#ifndef contentdebase\n'
+    '#ifndef codebase\n'
     '#define codebase\n\n'
-    'codebase byte codebase[] {\n'
+    'codebase byte code[] {\n'
     '%s'
     '\n};\n\n'
     '#endif'
