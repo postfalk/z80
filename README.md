@@ -2,8 +2,10 @@
 
 The basic idea of the project is to use an Arduino to support the development of a z80 computer system. The Arduino stands in as ...
 
-a) reset generator\s\s
-b) clock\s\s
+a) reset generator
+
+b) clock
+
 c) ROM for the lowest 64byte 0000h-003Fh
 
 The z80 code is fed from a C array to PORTD, PORTB (with 6pins on an Arduino UNO R3) as address bus, and PORTC simulates the control bus (RD --> PIN4, MRQ --> PIN2, RESET <-- PIN3, CLOCK <-- Pin5). 
@@ -51,12 +53,12 @@ Differences:
 
 *Addresses*:
 
-Memory:\s\s
-0000h - 003Fh   Arduino ROM emulation\s\s
-or\s\s
-0000h - 7FFFh   Space for ROM\s\s
+Memory:  
+0000h - 003Fh   Arduino ROM emulation  
+or  
+0000h - 7FFFh   Space for ROM  
 
-8000h - FFFFh   (static) RAM\s\s
+8000h - FFFFh   (static) RAM\  
 
 I/O:\s\s
 00h - 03h   PIO\s\s
