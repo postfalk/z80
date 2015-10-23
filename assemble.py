@@ -26,21 +26,17 @@ def bin_to_c_array(bin):
 
 def main(argv):
     inputfile = ''
-    outputfile = ''
     try:
-       opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+       opts, args = getopt.getopt(argv,"hi:",["ifile="])
     except getopt.GetoptError:
-       print 'test.py -i <inputfile> -o <outputfile>'
+       print 'assemble.py -i <inputfile>'
        sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print 'test.py -i <inputfile> -o <outputfile>'
+            print 'assemble.py -i <inputfile>'
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
-        elif opt in ("-o", "--ofile"):
-            outputfile = arg
-
     binfile_name = '{}.bin'.format(inputfile.split('.')[0])
     print '\nInput file:', inputfile
     try:
@@ -51,7 +47,7 @@ def main(argv):
         coded_code = bin_to_c_array(content)
         with open(OUTPUTFILE_NAME, 'w') as f:
             f.write(TEMPLATE % coded_code)
-        print 'Arduino C array: {}\n\nBuild successful\n'.format(
+        print 'Arduino C array: {}\n\nBuild successfully\n'.format(
             OUTPUTFILE_NAME)
     except CalledProcessError:
         print '\nThere have been errors in your z80 code.\n'

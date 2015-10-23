@@ -46,6 +46,5 @@ void loop() {
   }
   else {
     DDRD = B00000000;
-    PORTD = B00000000;
   }
 }
