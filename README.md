@@ -2,10 +2,8 @@
 
 The basic idea of the project is to use an Arduino to support the development of a z80 computer system. The Arduino stands in as ...
 
-a) reset generator
-
-b) clock
-
+a) reset generator\s\s
+b) clock\s\s
 c) ROM for the lowest 64byte 0000h-003Fh
 
 The z80 code is fed from a C array to PORTD, PORTB (with 6pins on an Arduino UNO R3) as address bus, and PORTC simulates the control bus (RD --> PIN4, MRQ --> PIN2, RESET <-- PIN3, CLOCK <-- Pin5). 
@@ -53,20 +51,20 @@ Differences:
 
 *Addresses*:
 
-Memory: 
-0000h - 003Fh   Arduino ROM emulation
-or 
-0000h - 7FFFh   Space for ROM
+Memory:\s\s
+0000h - 003Fh   Arduino ROM emulation\s\s
+or\s\s
+0000h - 7FFFh   Space for ROM\s\s
 
-8000h - FFFFh   (static) RAM
+8000h - FFFFh   (static) RAM\s\s
 
-I/O:
-00h - 03h   PIO
-  00h         PORT A - ctrl
-  01h         PORT A - data
-  02h         PORT B - ctrl
-  03h         PORT B - data
-80h -         available
+I/O:\s\s
+00h - 03h   PIO\s\s
+  00h         PORT A - ctrl\s\s
+  01h         PORT A - data\s\s
+  02h         PORT B - ctrl\s\s
+  03h         PORT B - data\s\s
+80h -         available\s\s
 
-Since there is a simple 1 bit address decoder (OR) on address pin 7 only two devices can be addressed. TODO: Use 74HCT238 to increase this number to 8.
+Since we have currently only a simple 1 bit address decoder (OR) on address pin 7 only two devices can be addressed. TODO: Use 74HCT238 to increase this number to 8.
 
