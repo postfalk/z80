@@ -3,7 +3,9 @@
 The basic idea of the project is to use an Arduino to support the development of a z80 computer system. The Arduino stands in as ...
 
 a) reset generator
+
 b) clock
+
 c) ROM for the lowest 64byte 0000h-003Fh
 
 The z80 code is fed from a C array to PORTD, PORTB (with 6pins on an Arduino UNO R3) as address bus, and PORTC simulates the control bus (RD --> PIN4, MRQ --> PIN2, RESET <-- PIN3, CLOCK <-- Pin5). 
@@ -41,7 +43,7 @@ Linux programmer for EPROM programmer
 
 https://github.com/vdudouyt/minipro
 
-** Current configuration **
+***Current configuration***
 
 The circuit follows very closely http://www.z80.info/gfx/z80test.gif.
 
@@ -49,7 +51,7 @@ Differences:
 
 - I am using an actual less modern and more original ZILOG z80 PIO.
 
-Addresses:
+*Addresses*:
 
 Memory: 
 0000h - 003Fh   Arduino ROM emulation
