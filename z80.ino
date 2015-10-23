@@ -2,7 +2,6 @@
 // the z80 is stored in a array, see
 #include "z80_code.h"
 
-bool rd, mreq;
 int spd = 0; //clock speed in ms delays
 
 void reset() {
@@ -20,16 +19,6 @@ void reset() {
 }
 
 void setup() {
-  // Serial.begin(9600);
-  // use C (analog in) port as Control Bus
-  // clock
-  // pinMode(A5, OUTPUT);
-  // rd
-  // pinMode(A4, INPUT);
-  // reset
-  // pinMode(A3, OUTPUT);
-  // mreq
-  // pinMode(A2, INPUT);
   // use D port as Data bus
   // input only simulating ROM
   DDRD = B11111111;
@@ -38,27 +27,19 @@ void setup() {
   // which has six lines available
   // 64 byte address space
   DDRB = B00000000;
+  // use C port as Control bus
+  // 2 mreq <- in
+  // 3 reset -> out
+  // 4 read <- in
+  // 5 clock -> out
   DDRC = B00101000;
   // PORTC = PORTC | B00100000;
   reset();
 }
 
 void loop() {
-  // delay(100);
   PORTC = PORTC | B00100000;
-  // Serial.println(PORTC | B10000000, BIN);
-  // delay(100);
   PORTC = PORTC ^ B00100000;
-  // Serial.println(PORTC | B10000000, BIN);
-  // digitalWrite(A5, HIGH);
-  // delay(spd);
-  // digitalWrite(A5, LOW);
-  // rd = digitalRead(A4);
-  // mreq = digitalRead(A2);
-  // delay(100);
-  // Serial.println(PINC, BIN);
-  // Serial.println(PINB);
-  // Serial.println(PINC & B0000010, BIN);
   if (!(PINC & B00010100)) {
     DDRD = B11111111;
     PORTD = code[PINB];
@@ -67,5 +48,4 @@ void loop() {
     DDRD = B00000000;
     PORTD = B00000000;
   }
-  // delay(spd);
 }
