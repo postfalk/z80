@@ -54,7 +54,7 @@ The circuit follows very closely http://www.z80.info/gfx/z80test.gif.
 
 Differences: 
 
-- I am using an actual less modern and more original ZILOG z80 PIO.
+- I am using the more original ZILOG z80 PIO.
 
 *Addresses*:
 
