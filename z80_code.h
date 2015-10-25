@@ -1,3 +1,6 @@
+// this file has been created by compiling
+// pioextended.bin
+
 #include <Arduino.h>
 #ifndef codebase
 #define codebase
