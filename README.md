@@ -35,9 +35,10 @@ In order to review binary hex code install bless:
 sudo apt-get install bless
 ```
 
-Notes:
+***EEPROM***
 
-Linux programmer for EPROM programmer
+I got a very cheap, very universal EEPROM programmer called MiniPro TL866xx. It works perfectly with following project: 
+Install the project if you want to use this project to directly write XPROMS with the code below.
 
 https://github.com/vdudouyt/minipro
 
