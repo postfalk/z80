@@ -12,6 +12,10 @@ The z80 board is basically a Arduino shield (even though much bigger and the Ard
 
 The Arduino emulation runs on somewhat over 600khz since all pinMode operations have been stripped out the Arduino code.
 
+After Arduino reset, the Aruino code will perform a z80 reset as well. 
+
+The clock speed can be modified by inserting Arduino delays in the code which is very useful for debugging. ```Serial.println``` proved als very useful even though it might conflict with z80 data bus on PORT D. For this reason it needs to be placed strategically (e.g. at the high phase of the clock cycle). 
+
 ***Prerequisites***
 
 There is actually a Z80 assembler in the Ubuntu universe repos!!! If you are using Ubuntu you are all set for now.
@@ -40,7 +44,9 @@ sudo apt-get install bless
 I got a very cheap, very universal EEPROM programmer called MiniPro TL866xx. It works perfectly with following project: 
 Install the project if you want to use this project to directly write XPROMS with the code below.
 
-https://github.com/vdudouyt/minipro
+https://github.com/vdudouyt/
+
+Tested with XICOR 28C64. The python code below assumes this 8k by 8byte device. Change code accordingly for other devices or more flexible use.
 
 ***Current configuration***
 
@@ -70,3 +76,12 @@ I/O:
 
 Since we have currently only a simple 1 bit address decoder (OR) on address pin 7 only two devices can be addressed. TODO: Use 74HCT238 to increase this number to 8.
 
+***Example code in this project***
+
+*piobasics.asm*
+
+Just turns bit 0 at port B on if addresses are configured as above. (any speed, originally 1 to 10hz :) )
+
+*pioextended.asm*
+
+Blinks bit 0 at port B if addresses are configured as above (optimized for, i.e. visible at 600kHz clock). Also requires RAM at ffffh for sub routine call. 
