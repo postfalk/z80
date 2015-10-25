@@ -1,30 +1,30 @@
 **Arduino driven Z80 development**
 
-The basic idea of the project is to use an Arduino to support the development of a z80 computer system. The Arduino stands in as ...
+The basic idea of this project is to use an Arduino to support the development of a z80 computer system and debug any of its components in the process. The Arduino stands in as ...
 
 a) reset generator  
 b) clock  
 c) ROM for the lowest 64byte 0000h-003Fh  
 
-The z80 code is fed from a C array to PORTD, PORTB (with 6pins on an Arduino UNO R3) as address bus, and PORTC simulates the control bus (RD --> PIN4, MRQ --> PIN2, RESET <-- PIN3, CLOCK <-- Pin5). 
+The z80 code is fed from a C array to PORTD, PORTB (with 6pins on an Arduino UNO R3) as address bus, and PORTC simulates the control bus (RD --> PIN4, MRQ --> PIN2, RESET <-- PIN3, CLOCK <-- Pin5). The array index correspondends directly with the z80 system address.
 
-The z80 board is basically a Arduino shield (even though much bigger and the Arduino is plucked upside down on top of it). In order to run the board without the Arduino, I created a circuit on an Arduino shield PCB with a reset and a clock circuit.
+The z80 board is more or less configured as an Arduino shield (even though bigger, the Arduino is plucked in upside down on top of it). In order to run the board without the Arduino, I created a circuit on an Arduino shield PCB with the reset and clock circuit. Thus, it is possible to go back and forth between normal computer operation and running debug code from Arduino.
 
-The Arduino emulation runs on somewhat over 600khz since all pinMode operations have been stripped out the Arduino code.
+The Arduino emulation runs somewhat over 600khz after stripping all pinMode routines out of the Arduino code. (I wonder whether the ```if ... else ...``` control structure could be replaced with bitwise logic as well).
 
-After Arduino reset, the Aruino code will perform a z80 reset as well. 
+After Arduino reset, the Aruino code will perform a z80 reset as well (which needs at least 4 clock cycles). 
 
-The clock speed can be modified by inserting Arduino delays in the code which is very useful for debugging. ```Serial.println``` proved als very useful even though it might conflict with z80 data bus on PORT D. For this reason it needs to be placed strategically (e.g. at the high phase of the clock cycle). 
+The clock speed can be modified by inserting Arduino delays in the code which is very useful for debugging. ```Serial.println``` proved also very useful even though it might conflict with z80 data bus on PORT D. For this reason it needs to be placed strategically (e.g. at the high phase of the clock cycle). 
 
 ***Prerequisites***
 
-There is actually a Z80 assembler in the Ubuntu universe repos!!! If you are using Ubuntu you are all set for now.
+There is a Z80 assembler in the Ubuntu universe repos!!! If you are using Ubuntu you are all set for now.
 
 ```
 sudo apt-get install z80asm 
 ```
 
-will work on Ubuntu. Otherwise make sure z80asm is in your executable path. There is also a de-assembler for binaries (z80dasm).
+Otherwise make sure z80asm is in your executable path. There is also a de-assembler for binaries (z80dasm).
 
 ***Assemble and generate Arduino code***
 
