@@ -5,10 +5,12 @@ setup:  ld sp, 0ffffh
         out (003h),a
 
 loop:   nop
-        ld a, 010101110b
+        ld a, 010000101b
         ld hl, 0ff00h   ; pass argument through random memory location
         ld (hl), a
         call parse
+        ld bc, 0400h
+        call wait
         jp loop
 
 parse:  nop             ; parse a byte from a register
@@ -27,6 +29,8 @@ cont:   out (002h), a
         pop bc
         dec b
         jp nz, lp1
+        ld a, 000h
+        out (002h), a
         ret
 
 wait:   nop             ; set relative wait time in bc before calling
