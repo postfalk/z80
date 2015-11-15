@@ -45,45 +45,27 @@ i2cmessage: call startcond
             ret
 
 startcond:  ld a,003h
-            out(002h),a
-            ld bc,0300h
+            call output
+            ld bc,00280h
             call wait
             ld a,002h
-            out(002h),a
-            ld bc, 00080h
+            call output
+            ld bc, 00280h
             call wait
             ld a, 000h
-            out(002h), a
-            ld bc, 00080h
+            call output
+            ld bc, 00280h
             call wait
             ret
 
 endcond:    ld a, 002h
-            out(002h), a
-            ld bc, 00080h
+            call output
+            ld bc, 00280h
             call wait
             ld a, 003h
-            out(002h), a
-            ld bc, 00080h
+            call output
+            ld bc, 00280h
             call wait
-            ret
-
-ackn:       ld a, 011001111b
-            out(003h), a
-            ld a, 001h
-            out(003h), a
-            ld bc, 00080h
-            call wait
-            ld a, 002h
-            out(002h), a
-            ld bc, 00080h
-            call wait
-            ld a, 000h
-            out(002h), a
-            ld bc, 00080h
-            call wait
-            ld a, 00fh
-            out(003h), a
             ret
 
 parse:      nop
@@ -96,31 +78,51 @@ lp1:        ld a, (hl)
             jr cont
 off:        ld a, 000h
 cont:       call clbit
-            ;out(002h), a
-            ;push bc
-            ;ld bc, 00080h
-            ;call wait
-            ;pop bc
             dec b
             jp nz, lp1
-            ; call ackn
+            call ackn
             ret
 
 ; clock cycle around bit, from register a
 clbit:      push bc
             and 001h
-            out (002h), a
+            call output
             ld bc, 00280h
             call wait
             or 002h
-            out (002h), a
+            call output
             ld bc, 00280h
             call wait
             and 001h
-            out (002h), a
+            call output
             ld bc, 00280h
             call wait
             pop bc
+            ret
+
+ackn:       ld a, 011001111b
+            out(003h), a
+            ld a, 001h
+            out(003h), a
+            ld bc, 00001h
+            call wait
+            ld a, 002h
+            out(002h), a
+            ld bc, 00001h
+            call wait
+            ld a, 000h
+            out(002h), a
+            ld bc, 00001h
+            call wait
+            ld a, 00fh
+            out(003h), a
+            ret
+
+; wrap output for alternative output modes
+; e.g. to simulate open drain by switching 
+; the PIOs output mode
+; see http://members.iinet.net.au/~daveb/downloads/Z80.zip
+output:     out(002h), a
             ret
 
 ; set relative wait time in bc
