@@ -29,11 +29,13 @@ cont:   out (002h), a
         pop bc
         dec b
         jp nz, lp1
-        ld a, 000h
+        ld a, 002h
         out (002h), a
         ret
 
 wait:   nop             ; set relative wait time in bc before calling
+        push de         ; protect affected registers
+        push af
 outer:  ld de, 0100h
 inner:  dec de
         ld a, d
@@ -43,4 +45,6 @@ inner:  dec de
         ld a, b
         or c
         jp nz, outer
+        pop af
+        pop de
         ret

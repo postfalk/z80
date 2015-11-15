@@ -1,6 +1,6 @@
 org 00000h
 
-setup:  ld sp, 0ffffh
+setup:  ld sp, 0feffh
         ld a,00fh
         out (003h),a
 
