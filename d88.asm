@@ -1,3 +1,12 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                                                                        ;
+;  This is a software implementation of I2C for my little Z80 project    ;
+;  ==================================================================    ;
+;  It currently drives Adafruits LED backpacks based on ... chip         ;
+;  See data sheet here ...                                               ;
+;                                                                        ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 org 00000h
 
 setup:      ld sp, 0ffffh
