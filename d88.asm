@@ -9,67 +9,82 @@ loop:       nop
             jp loop
 
 i2cmessage: call startcond
-            ld hl, 0ff00h
-            ld a, 070h
-            ld (hl), a
-            call parse
-            ld a, 000100001b
+            call address
+            ; start oscillator
+            ld a, 021h
             ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
+            ; set brightness
             call startcond
-            ld a, 070h
-            ld hl, 0ff00h
-            ld (hl), a
-            call parse
-            ld a, 010000001b
+            call address
+            ld a, 0e0h
             ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
+            ; turn display on
             call startcond
-            ld a, 070h
-            ld hl, 0ff00h
-            ld (hl), a
-            call parse
-            ld a, 001h
-            ld hl, 0ff00h
-            ld (hl), a
-            call parse
-            ld a, 00fh
+            call address
+            ld a, 081h
             ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
+            ; write address
+            call startcond
+            call address
+            ld a, 010h
+            ld hl, 00ff00h
+            ld (hl), a
+            call parse
+            ; write data
+            ld a, 0ffh
+            ld hl, 0ff00h
+            ld (hl), a
+            call parse
+            call endcond
+            ret
+
+address:    ld hl, 0ff00h
+            ; call device address
+            ld a, 0e0h
+            ld (hl), a
+            call parse
+            ld bc, 00001h
+            call wait
             ret
 
 startcond:  ld a,003h
             call output
-            ld bc,00280h
+            ld bc, 00001h
             call wait
             ld a,002h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
             call wait
             ld a, 000h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
             call wait
             ret
 
-endcond:    ld a, 002h
+endcond:    ld a, 000h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
+            call wait
+            ld a, 002h
+            call output
+            ld bc, 00001h
             call wait
             ld a, 003h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
             call wait
             ret
 
-parse:      nop
-            ld b, 008h      ; for i=0 to 7
+parse:      ld b, 008h      ; for i=0 to 7
 lp1:        ld a, (hl)
             rlca
             ld (hl), a
@@ -87,42 +102,44 @@ cont:       call clbit
 clbit:      push bc
             and 001h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
             call wait
             or 002h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
             call wait
             and 001h
             call output
-            ld bc, 00280h
+            ld bc, 00001h
             call wait
             pop bc
             ret
 
-ackn:       ld a, 011001111b
-            out(003h), a
+ackn:       ld a, 001h
+            call output
+            ld bc, 00002h
+            call wait
+            ld a, 003h
+            call output
+            ld bc, 00002h
+            call wait
             ld a, 001h
-            out(003h), a
-            ld bc, 00001h
+            call output
+            ld bc, 00002h
             call wait
-            ld a, 002h
-            out(002h), a
-            ld bc, 00001h
-            call wait
-            ld a, 000h
-            out(002h), a
-            ld bc, 00001h
-            call wait
-            ld a, 00fh
-            out(003h), a
             ret
 
 ; wrap output for alternative output modes
 ; e.g. to simulate open drain by switching 
 ; the PIOs output mode
 ; see http://members.iinet.net.au/~daveb/downloads/Z80.zip
-output:     out(002h), a
+output:     ld c, a
+            ld a, 000h
+            out(002h), a
+            ld a, 011001111b
+            out(003h), a
+            ld a, c
+            out(003h), a
             ret
 
 ; set relative wait time in bc
