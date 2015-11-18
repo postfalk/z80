@@ -3,16 +3,25 @@ org 00000h
 setup:      ld sp, 0ffffh
             ld a,00fh
             out (003h),a
+            ld hl, 00ff00h
+            ld a,000h
+            out (002h),a
 
 loop:       nop
             call i2cmessage
-            jp loop
+loop2:      call oscillate  ; provide the display with a clock
+            jp loop2
+
+oscillate:  ld a, 000h      ; there has to be a clock signal
+            call output     ; to make the display work
+            ld a, 002h
+            call output
+            ret
 
 i2cmessage: call startcond
             call address
             ; start oscillator
             ld a, 021h
-            ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
@@ -20,7 +29,6 @@ i2cmessage: call startcond
             call startcond
             call address
             ld a, 0e0h
-            ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
@@ -28,32 +36,24 @@ i2cmessage: call startcond
             call startcond
             call address
             ld a, 081h
-            ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
-            ; write address
             call startcond
             call address
-            ld a, 010h
-            ld hl, 00ff00h
+            ld a, 000h
             ld (hl), a
             call parse
             ; write data
             ld a, 0ffh
-            ld hl, 0ff00h
             ld (hl), a
             call parse
             call endcond
             ret
 
-address:    ld hl, 0ff00h
-            ; call device address
-            ld a, 0e0h
+address:    ld a, 0e0h      ; call device address
             ld (hl), a
             call parse
-            ld bc, 00001h
-            call wait
             ret
 
 startcond:  ld a,003h
@@ -62,26 +62,16 @@ startcond:  ld a,003h
             call wait
             ld a,002h
             call output
-            ld bc, 00001h
-            call wait
             ld a, 000h
             call output
-            ld bc, 00001h
-            call wait
             ret
 
 endcond:    ld a, 000h
             call output
-            ld bc, 00001h
-            call wait
             ld a, 002h
             call output
-            ld bc, 00001h
-            call wait
             ld a, 003h
             call output
-            ld bc, 00001h
-            call wait
             ret
 
 parse:      ld b, 008h      ; for i=0 to 7
@@ -102,44 +92,31 @@ cont:       call clbit
 clbit:      push bc
             and 001h
             call output
-            ld bc, 00001h
-            call wait
             or 002h
             call output
-            ld bc, 00001h
-            call wait
             and 001h
             call output
-            ld bc, 00001h
-            call wait
             pop bc
             ret
 
+; send acknowledge sequence
+; TODO: actually acknowledge and not
+; just assume ok
 ackn:       ld a, 001h
             call output
-            ld bc, 00002h
-            call wait
             ld a, 003h
             call output
-            ld bc, 00002h
-            call wait
             ld a, 001h
             call output
-            ld bc, 00002h
-            call wait
             ret
 
-; wrap output for alternative output modes
-; e.g. to simulate open drain by switching 
-; the PIOs output mode
+; simulate open drain by switching 
+; between PIOs output modes
 ; see http://members.iinet.net.au/~daveb/downloads/Z80.zip
-output:     ld c, a
-            ld a, 000h
-            out(002h), a
-            ld a, 011001111b
-            out(003h), a
-            ld a, c
-            out(003h), a
+output:     ld c, 003h
+            ld b, 0cfh
+            out(c), b
+            out(c), a
             ret
 
 ; set relative wait time in bc
