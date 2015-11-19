@@ -2,10 +2,14 @@
 ;                                                                        ;
 ;  This is a software implementation of I2C for my little Z80 project    ;
 ;  ==================================================================    ;
-;  It currently drives Adafruits LED backpacks based on ... chip         ;
-;  See data sheet here ...                                               ;
+;  It currently drives Adafruits LED backpacks based on ht16k33 chip     ;
+;                                                                        ;
+;  See datasheet here                                                    ;
+;  http://www.adafruit.com/datasheets/ht16K33v110.pdf                    ;
 ;                                                                        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; TODO; streamline!
 
 org 00000h
 
