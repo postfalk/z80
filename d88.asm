@@ -35,37 +35,31 @@ i2cmessage: call startcond
             call address
             ; start oscillator
             ld a, 021h
-            ld (hl), a
             call parse
             call endcond
             ; set brightness
             call startcond
             call address
             ld a, 0e0h
-            ld (hl), a
             call parse
             call endcond
             ; turn display on
             call startcond
             call address
             ld a, 081h
-            ld (hl), a
             call parse
             call endcond
             call startcond
             call address
             ld a, 000h
-            ld (hl), a
             call parse
             ; write data
             ld a, 0ffh
-            ld (hl), a
             call parse
             call endcond
             ret
 
 address:    ld a, 0e0h      ; call device address
-            ld (hl), a
             call parse
             ret
 
@@ -75,8 +69,6 @@ startcond:  ld a,003h
             call wait
             ld a,002h
             call output
-            ; ld a, 000h
-            ; call output
             ret
 
 endcond:    ld a, 000h
@@ -88,13 +80,10 @@ endcond:    ld a, 000h
             ret
 
 parse:      ld b, 008h      ; for i=0 to 7
-lp1:        ld a, (hl)
-            rlca
-            ld (hl), a
-            jr nc, off
+            ld c, a
+lp1:        rlc c
             ld a, 001h
-            jr cont
-off:        ld a, 000h
+            and c
 cont:       call clbit
             dec b
             jp nz, lp1
@@ -109,8 +98,6 @@ clbit:      push bc
             call output
             or 002h
             call output
-            ; and 001h
-            ; call output
             pop bc
             ret
 
@@ -121,8 +108,6 @@ ackn:       ld a, 001h
             call output
             ld a, 003h
             call output
-            ; ld a, 001h
-            ; call output
             ret
 
 ; simulate open drain by switching 
