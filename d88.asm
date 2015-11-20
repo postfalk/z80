@@ -13,7 +13,7 @@
 
 org 00000h
 
-setup:      ld sp, 0ffffh   ; set stackpointer
+setup:      ld sp, 0ffffh   ; set stack pointer
             ld hl, 00ff00h  ; begin page to store data
             ld a,00fh       ; set PIO B to output mode
             out (003h),a    ;
@@ -80,10 +80,10 @@ endcond:    ld a, 000h
             ret
 
 parse:      ld b, 008h      ; for i=0 to 7
-            ld c, a
-lp1:        rlc c
-            ld a, 001h
-            and c
+            ld c, a         ; using c here since I have to push bc anyways
+lp1:        rlc c           ; rotate to left so that most significant bit becomes least significant
+            ld a, 001h      ; load mask
+            and c           ; and deletes all not masked bits
 cont:       call clbit
             dec b
             jp nz, lp1
@@ -94,7 +94,6 @@ cont:       call clbit
 ; removed getting back to original state
 ; seems to work without it
 clbit:      push bc
-            and 001h
             call output
             or 002h
             call output
