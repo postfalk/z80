@@ -13,12 +13,12 @@
 
 org 00000h
 
-setup:      ld sp, 0ffffh
-            ld a,00fh
-            out (003h),a
-            ld hl, 00ff00h
-            ld a,000h
-            out (002h),a
+setup:      ld sp, 0ffffh   ; set stackpointer
+            ld hl, 00ff00h  ; begin page to store data
+            ld a,00fh       ; set PIO B to output mode
+            out (003h),a    ;
+            ld a,000h       ; set PIO B OUT to 00fh
+            out (002h),a    ;
 
 loop:       nop
             call i2cmessage
@@ -71,12 +71,12 @@ address:    ld a, 0e0h      ; call device address
 
 startcond:  ld a,003h
             call output
-            ld bc, 00001h
+            ld bc, 00001h   ; wait here to make start condition stable, could be much shorter
             call wait
             ld a,002h
             call output
-            ld a, 000h
-            call output
+            ; ld a, 000h
+            ; call output
             ret
 
 endcond:    ld a, 000h
@@ -102,13 +102,15 @@ cont:       call clbit
             ret
 
 ; clock cycle around bit, from register a
+; removed getting back to original state
+; seems to work without it
 clbit:      push bc
             and 001h
             call output
             or 002h
             call output
-            and 001h
-            call output
+            ; and 001h
+            ; call output
             pop bc
             ret
 
@@ -119,8 +121,8 @@ ackn:       ld a, 001h
             call output
             ld a, 003h
             call output
-            ld a, 001h
-            call output
+            ; ld a, 001h
+            ; call output
             ret
 
 ; simulate open drain by switching 
