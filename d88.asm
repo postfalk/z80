@@ -12,9 +12,10 @@
 ; TODO; streamline!
 
 org 00000h
+display:    db 080h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
 
 setup:      ld sp, 0ffffh   ; set stack pointer
-            ld hl, 00ff00h  ; begin page to store data
+            ld hl, 00ff00h  ; begin page to store datasheet
             ld a,00fh       ; set PIO B to output mode
             out (003h),a    ;
             ld a,000h       ; set PIO B OUT to 00fh
@@ -54,7 +55,21 @@ i2cmessage: call startcond
             ld a, 000h
             call parse
             ; write data
-            ld a, 0ffh
+            ld a, (display)
+            call parse
+            ld a, (display)
+            call parse
+            ld a, (display)
+            call parse
+            ld a, (display)
+            call parse
+            ld a, (display)
+            call parse
+            ld a, (display)
+            call parse
+            ld a, (display)
+            call parse
+            ld a, (display)
             call parse
             call endcond
             ret
@@ -69,6 +84,10 @@ startcond:  ld a,003h
             call wait
             ld a,002h
             call output
+            ret
+
+skip:       ld a,000h
+            call parse
             ret
 
 endcond:    ld a, 000h
