@@ -48,6 +48,13 @@ https://github.com/vdudouyt/
 
 Tested with XICOR 28C64. The python code below assumes this 8k by 8byte device. Change code accordingly for other devices or more flexible use.
 
+Example use:
+
+````sh
+minipro -p X28C64 -w d88_rom.bin
+````
+
+
 ***Current configuration***
 
 The circuit follows very closely http://www.z80.info/gfx/z80test.gif.
@@ -85,3 +92,9 @@ Just turns bit 0 at port B on if addresses are configured as above. (any speed, 
 *pioextended.asm*
 
 Blinks bit 0 at port B if addresses are configured as above (optimized for, i.e. visible at 600kHz clock). Also requires RAM at ffffh for sub routine call. 
+
+*d88.asm*
+
+***Documentation Links***
+
+Zilog User Manual: http://www.zilog.com/appnotes_download.php?FromPage=DirectLink&dn=UM0080&ft=User%20Manual&f=YUhSMGNEb3ZMM2QzZHk1NmFXeHZaeTVqYjIwdlpHOWpjeTk2T0RBdmRXMHdNRGd3TG5Ca1pnPT0=
