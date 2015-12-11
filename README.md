@@ -48,6 +48,13 @@ https://github.com/vdudouyt/
 
 Tested with XICOR 28C64. The python code below assumes this 8k by 8byte device. Change code accordingly for other devices or more flexible use.
 
+Example use:
+
+````sh
+minipro -p X28C64 -w d88_rom.bin
+````
+
+
 ***Current configuration***
 
 The circuit follows very closely http://www.z80.info/gfx/z80test.gif.
