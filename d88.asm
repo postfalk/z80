@@ -103,7 +103,7 @@ parse:      ld b, 008h      ; for i=0 to 7
 lp1:        rlc c           ; rotate to left so that most significant bit becomes least significant
             ld a, 001h      ; load mask
             and c           ; and deletes all not masked bits
-cont:       call clbit
+            call clbit
             dec b
             jp nz, lp1
             call ackn
@@ -125,6 +125,8 @@ clbit:      push bc
 ackn:       ld a, 001h
             call output
             ld a, 003h
+            call output
+            ld a, 001h
             call output
             ret
 
