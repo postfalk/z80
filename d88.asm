@@ -55,22 +55,11 @@ i2cmessage: call startcond
             ld a, 000h
             call parse
             ; write data
-            ld a, (display)
+            ld b, 08h
+lp10:       ld a, (display)
             call parse
-            ld a, (display)
-            call parse
-            ld a, (display)
-            call parse
-            ld a, (display)
-            call parse
-            ld a, (display)
-            call parse
-            ld a, (display)
-            call parse
-            ld a, (display)
-            call parse
-            ld a, (display)
-            call parse
+            dec b
+            jp nz, lp10
             call endcond
             ret
 
@@ -98,7 +87,8 @@ endcond:    ld a, 000h
             call output
             ret
 
-parse:      ld b, 008h      ; for i=0 to 7
+parse:      push bc
+            ld b, 008h      ; for i=0 to 7
             ld c, a         ; using c here since I have to push bc anyways
 lp1:        rlc c           ; rotate to left so that most significant bit becomes least significant
             ld a, 001h      ; load mask
@@ -107,6 +97,7 @@ lp1:        rlc c           ; rotate to left so that most significant bit become
             dec b
             jp nz, lp1
             call ackn
+            pop bc
             ret
 
 ; clock cycle around bit, from register a
