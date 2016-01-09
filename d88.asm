@@ -60,20 +60,12 @@ i2cmessage:         call startTransmission
                     ret
 
 ; use terminology similar to Wire.h C-library
-startTransmission:  call startcond
-                    call address
-                    ret
-
-address:            ld a, 0e0h      ; call device address
-                    call write
-                    ret
-
-startcond:          ld a,003h
+startTransmission:  ld a,003h
                     call output
-                    ld bc, 00001h   ; wait here to make start condition stable, could be much shorter
-                    call wait
                     ld a,002h
                     call output
+                    ld a, 0e0h      ; call device address, move to variable as needed
+                    call write
                     ret
 
 skip:               ld a,000h
