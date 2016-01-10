@@ -12,7 +12,7 @@
 ; TODO; streamline!
 
 org 00000h
-display:    db 021h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
+display:            db 025h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
 
 setup:              ld sp, 0ffffh   ; set stack pointer
                     ld hl, 00ff00h  ; begin page to store datasheet
@@ -26,7 +26,11 @@ loop:               nop
     ; just hanging out here for now
     loop2:          jp loop2
 
-i2cmessage:         call startTransmission
+i2cmessage:         call backpack_on
+                    call write_frame
+                    ret
+
+backpack_on:        call startTransmission
                     ; start oscillator
                     ld a, 021h
                     call write
@@ -41,10 +45,11 @@ i2cmessage:         call startTransmission
                     ld a, 081h
                     call write
                     call endTransmission
-                    call startTransmission
+                    ret
+
+write_frame:        call startTransmission
                     ld a, 000h
                     call write
-                    ; write datasheet
                     ld b, 0fh
     lp10:           ld a, (display)
                     call write
@@ -91,6 +96,8 @@ write:              push bc
 clbit:              push bc
                     call output
                     or 002h
+                    call output
+                    and 001h
                     call output
                     pop bc
                     ret
