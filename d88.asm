@@ -14,23 +14,17 @@
 org 00000h
 display:    db 001h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
 
-setup:      ld sp, 0ffffh   ; set stack pointer
-            ld hl, 00ff00h  ; begin page to store datasheet
-            ld a,00fh       ; set PIO B to output mode
-            out (003h),a    ;
-            ld a,000h       ; set PIO B OUT to 00fh
-            out (002h),a    ;
+setup:              ld sp, 0ffffh   ; set stack pointer
+                    ld hl, 00ff00h  ; begin page to store datasheet
+                    ld a, 00fh       ; set PIO B to output mode
+                    out (003h),a    ;
+                    ld a, 000h       ; set PIO B OUT to 00fh
+                    out (002h),a    ;
 
-loop:       nop
-            call i2cmessage
-loop2:      call oscillate  ; provide the display with a clock
-            jp loop2
-
-oscillate:  ld a, 000h      ; there has to be a clock signal
-            call output     ; to make the display work
-            ld a, 002h
-            call output
-            ret
+loop:               nop
+                    call i2cmessage
+    ; just hanging out here for now
+    loop2:          jp loop2
 
 i2cmessage:         call startTransmission
                     ; start oscillator
@@ -50,7 +44,7 @@ i2cmessage:         call startTransmission
                     call startTransmission
                     ld a, 000h
                     call write
-                    ; write data
+                    ; write datasheet
                     ld b, 0fh
     lp10:           ld a, (display)
                     call write
@@ -68,15 +62,13 @@ startTransmission:  ld a,003h
                     call write
                     ret
 
-skip:               ld a,000h
-                    call write
-                    ret
-
 endTransmission:    ld a, 000h
                     call output
                     ld a, 002h
                     call output
                     ld a, 003h
+                    call output
+                    ld a, 000h
                     call output
                     ret
 
@@ -116,7 +108,7 @@ ackn:               ld a, 001h
 ; between PIOs output modes
 ; see http://members.iinet.net.au/~daveb/downloads/Z80.zip
 output:             ld c, 003h
-                    ld b, 0cfh
+                    ld b, 0ffh ; was 0cfh do not remember why
                     out(c), b
                     out(c), a
                     ret
