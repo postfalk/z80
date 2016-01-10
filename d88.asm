@@ -12,7 +12,7 @@
 ; TODO; streamline!
 
 org 00000h
-display:    db 001h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
+display:    db 021h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
 
 setup:              ld sp, 0ffffh   ; set stack pointer
                     ld hl, 00ff00h  ; begin page to store datasheet
