@@ -12,18 +12,17 @@
 ; TODO; streamline!
 
 org 00000h
-display:            db 023h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
+display:            db 023h, 023h, 023h, 023h, 023h, 023h, 023h, 023h
 
-setup:              ld sp, 0ffffh   ; set stack pointer
-                    ld hl, 00ff00h  ; begin page to store datasheet
-                    ld a, 00fh       ; set PIO B to output mode
-                    out (003h),a    ;
-                    ld a, 000h       ; set PIO B OUT to 00fh
-                    out (002h),a    ;
+setup:              ld sp, 0ffffh       ; set stack pointer
+                    ld hl, 00ff00h      ; begin page to store datasheet
+                    ld a, 00fh          ; set PIO B to output mode
+                    out (003h),a        ;
+                    ld a, 000h          ; set PIO B OUT to 00fh
+                    out (002h),a        ;
 
 loop:               nop
-                    call i2cmessage
-    ; just hanging out here for now
+                    call i2cmessage     ; just hanging out here for now
     loop2:          jp loop2
 
 i2cmessage:         call backpack_on
@@ -50,8 +49,13 @@ backpack_on:        call startTransmission
 write_frame:        call startTransmission
                     ld a, 000h
                     call write
+                    ld hl, display
                     ld b, 0fh
-    lp10:           ld a, (display)
+    lp10:           ld a, b
+                    rra
+                    jp c,jp10
+                    inc hl
+        jp10:       ld a, (hl)
                     call write
                     dec b
                     jp nz, lp10
