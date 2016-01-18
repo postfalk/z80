@@ -12,7 +12,7 @@
 ; TODO; streamline!
 
 org 00000h
-display:            db 025h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
+display:            db 023h, 055h, 077h, 055h, 055h, 055h, 055h, 055h
 
 setup:              ld sp, 0ffffh   ; set stack pointer
                     ld hl, 00ff00h  ; begin page to store datasheet
@@ -61,6 +61,8 @@ write_frame:        call startTransmission
 ; use terminology similar to Wire.h C-library
 startTransmission:  ld a,003h
                     call output
+                    ld bc, 0001h
+                    call wait
                     ld a,002h
                     call output
                     ld a, 0e0h      ; call device address, move to variable as needed
