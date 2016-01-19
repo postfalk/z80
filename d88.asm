@@ -12,7 +12,8 @@
 ; TODO; streamline!
 
 org 00000h
-display:            db 023h, 023h, 023h, 023h, 023h, 023h, 023h, 023h
+display:            db 001h, 001h, 001h, 044h, 001h, 044h, 023h, 044h
+;display:            db 001h, 001h, 001h, 001h, 001h, 001h, 001h, 001h
 
 setup:              ld sp, 0ffffh       ; set stack pointer
                     ld hl, 00ff00h      ; begin page to store datasheet
@@ -20,10 +21,13 @@ setup:              ld sp, 0ffffh       ; set stack pointer
                     out (003h),a        ;
                     ld a, 000h          ; set PIO B OUT to 00fh
                     out (002h),a        ;
+                    ld a, 003h
+                    call output
+                    ld bc, 0001h
+                    call wait
 
-loop:               nop
-                    call i2cmessage     ; just hanging out here for now
-    loop2:          jp loop2
+loop:               call i2cmessage     
+    loop2:          jp loop2            ; just hanging out here for now
 
 i2cmessage:         call backpack_on
                     call write_frame
@@ -67,6 +71,8 @@ startTransmission:  ld a,003h
                     call output
                     ld bc, 0001h
                     call wait
+                    ld bc, 0001h
+                    call wait
                     ld a,002h
                     call output
                     ld a, 0e0h      ; call device address, move to variable as needed
@@ -79,6 +85,8 @@ endTransmission:    ld a, 000h
                     call output
                     ld a, 003h
                     call output
+                    ld bc, 0001h
+                    call wait
                     ld a, 000h
                     call output
                     ret
@@ -103,6 +111,8 @@ clbit:              push bc
                     call output
                     or 002h
                     call output
+                    ld bc, 001h
+                    call wait
                     and 001h
                     call output
                     pop bc
@@ -111,17 +121,21 @@ clbit:              push bc
 ; send acknowledge sequence
 ; TODO: actually acknowledge and not
 ; just assume ok
-ackn:               ld a, 001h
+ackn:               push bc
+                    ld a, 001h
                     call output
                     ld a, 003h
                     call output
+                    ld bc, 0001h
+                    call wait
+                    pop bc
                     ret
 
 ; simulate open drain by switching 
 ; between PIOs output modes
 ; see http://members.iinet.net.au/~daveb/downloads/Z80.zip
 output:             ld c, 003h
-                    ld b, 0ffh ; was 0cfh do not remember why
+                    ld b, 0cfh ; was 0cfh do not remember why
                     out(c), b
                     out(c), a
                     ret
