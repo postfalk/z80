@@ -12,21 +12,20 @@
 ; TODO; streamline!
 
 org 00000h
-display:            db 001h, 001h, 001h, 044h, 001h, 044h, 023h, 044h
-;display:            db 001h, 001h, 001h, 001h, 001h, 001h, 001h, 001h
+display:            db 0fh, 0fh, 0fh, 0fh, 0fh, 0fh, 0fh, 0fh
 
 setup:              ld sp, 0ffffh       ; set stack pointer
                     ld hl, 00ff00h      ; begin page to store datasheet
                     ld a, 00fh          ; set PIO B to output mode
-                    out (003h),a        ;
-                    ld a, 000h          ; set PIO B OUT to 00fh
-                    out (002h),a        ;
-                    ld a, 003h
+                    out (03h),a        ;
+                    ld a, 00h          ; set PIO B OUT to 00fh
+                    out (02h),a        ;
+                    ld a, 03h
                     call output
-                    ld bc, 0001h
+                    ld bc, 01h
                     call wait
 
-loop:               call i2cmessage     
+loop:               call i2cmessage
     loop2:          jp loop2            ; just hanging out here for now
 
 i2cmessage:         call backpack_on
@@ -51,13 +50,13 @@ backpack_on:        call startTransmission
                     ret
 
 write_frame:        call startTransmission
-                    ld a, 000h
+                    ld a, 00h
                     call write
                     ld hl, display
                     ld b, 0fh
     lp10:           ld a, b
-                    rra
-                    jp c,jp10
+                    dec a
+                    jp nc, jp10
                     inc hl
         jp10:       ld a, (hl)
                     call write
@@ -67,27 +66,27 @@ write_frame:        call startTransmission
                     ret
 
 ; use terminology similar to Wire.h C-library
-startTransmission:  ld a,003h
+startTransmission:  ld a, 03h
                     call output
-                    ld bc, 0001h
+                    ld bc, 01h
                     call wait
-                    ld bc, 0001h
+                    ld bc, 01h
                     call wait
-                    ld a,002h
+                    ld a,02h
                     call output
                     ld a, 0e0h      ; call device address, move to variable as needed
                     call write
                     ret
 
-endTransmission:    ld a, 000h
+endTransmission:    ld a, 00h
                     call output
-                    ld a, 002h
+                    ld a, 02h
                     call output
-                    ld a, 003h
+                    ld a, 03h
                     call output
                     ld bc, 0001h
                     call wait
-                    ld a, 000h
+                    ld a, 00h
                     call output
                     ret
 
