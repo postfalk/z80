@@ -12,18 +12,17 @@
 ; TODO; streamline!
 
 org 00000h
-display:            db 0fh, 0fh, 0fh, 0fh, 0fh, 0fh, 0fh, 0fh
 
 setup:              ld sp, 0ffffh       ; set stack pointer
                     ld hl, 00ff00h      ; begin page to store datasheet
                     ld a, 00fh          ; set PIO B to output mode
-                    out (03h),a        ;
-                    ld a, 00h          ; set PIO B OUT to 00fh
-                    out (02h),a        ;
+                    out (03h),a         ;
+                    ld a, 00h           ; set PIO B OUT to 00fh
+                    out (02h),a         ;
                     ld a, 03h
                     call output
-                    ld bc, 01h
-                    call wait
+                    ld bc, 01h          ; waiting for power-on-reset
+                    call wait           ; of display finished
 
 loop:               call i2cmessage
     loop2:          jp loop2            ; just hanging out here for now
@@ -53,13 +52,12 @@ write_frame:        call startTransmission
                     ld a, 00h
                     call write
                     ld hl, display
-                    ld b, 0fh
-    lp10:           ld a, b
-                    dec a
-                    jp nc, jp10
-                    inc hl
-        jp10:       ld a, (hl)
+                    ld b, 08h
+    lp10:           ld a, (hl)
                     call write
+                    ld a, 00h
+                    call write
+                    inc hl
                     dec b
                     jp nz, lp10
                     call endTransmission
@@ -68,10 +66,8 @@ write_frame:        call startTransmission
 ; use terminology similar to Wire.h C-library
 startTransmission:  ld a, 03h
                     call output
-                    ld bc, 01h
-                    call wait
-                    ld bc, 01h
-                    call wait
+                    ld bc, 01h      ; this wait is really required
+                    call wait       ; but could probably be shorter
                     ld a,02h
                     call output
                     ld a, 0e0h      ; call device address, move to variable as needed
@@ -84,8 +80,8 @@ endTransmission:    ld a, 00h
                     call output
                     ld a, 03h
                     call output
-                    ld bc, 0001h
-                    call wait
+                    ld bc, 01h      ; this wait is required 
+                    call wait       ; but could be shorter
                     ld a, 00h
                     call output
                     ret
@@ -110,8 +106,6 @@ clbit:              push bc
                     call output
                     or 002h
                     call output
-                    ld bc, 001h
-                    call wait
                     and 001h
                     call output
                     pop bc
@@ -125,8 +119,6 @@ ackn:               push bc
                     call output
                     ld a, 003h
                     call output
-                    ld bc, 0001h
-                    call wait
                     pop bc
                     ret
 
@@ -154,3 +146,6 @@ wait:               push de         ; protect affected registers
                     pop af
                     pop de
                     ret
+
+; store data here
+display:            db 01eh, 021h, 0d2h, 0c0h, 0d2h, 0cch, 021h, 01eh
