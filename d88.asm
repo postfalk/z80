@@ -23,13 +23,11 @@ setup:              ld sp, 0ffffh       ; set stack pointer
                     call output
                     ld bc, 01h          ; waiting for power-on-reset
                     call wait           ; of display finished
+                    call backpack_on
 
-loop:               call i2cmessage
-    loop2:          jp loop2            ; just hanging out here for now
-
-i2cmessage:         call backpack_on
+loop:               ld hl, display
                     call write_frame
-                    ret
+    loop2:          jp loop2            ; just hanging out here for now
 
 backpack_on:        call startTransmission
                     ; start oscillator
@@ -51,7 +49,6 @@ backpack_on:        call startTransmission
 write_frame:        call startTransmission
                     ld a, 00h
                     call write
-                    ld hl, display
                     ld b, 08h
     lp10:           ld a, (hl)
                     call write
