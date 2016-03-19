@@ -27,7 +27,11 @@ setup:              ld sp, 0ffffh       ; set stack pointer
 
 loop:               ld hl, display
                     call write_frame
-    loop2:          jp loop2            ; just hanging out here for now
+    loop2:          ld a, 01h
+                    call output
+                    ld a, 03h
+                    call output
+                    jp loop2            ; just hanging out here for now
 
 backpack_on:        call startTransmission
                     ; start oscillator
@@ -79,8 +83,6 @@ endTransmission:    ld a, 00h
                     call output
                     ld bc, 01h      ; this wait is required 
                     call wait       ; but could be shorter
-                    ld a, 00h
-                    call output
                     ret
 
 write:              push bc
@@ -111,12 +113,11 @@ clbit:              push bc
 ; send acknowledge sequence
 ; TODO: actually acknowledge and not
 ; just assume ok
-ackn:               push bc
+ackn:               
                     ld a, 001h
                     call output
                     ld a, 003h
                     call output
-                    pop bc
                     ret
 
 ; simulate open drain by switching 
