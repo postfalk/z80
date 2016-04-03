@@ -1,4 +1,8 @@
+*My Z80 Computer
+
 **Arduino driven Z80 development**
+
+The Arduino is gone now. Development is fun without it. However, the form factor is still there. Arduino could be used for debugging as needed.
 
 The basic idea of this project is to use an Arduino to support the development of a z80 computer system and debug any of its components in the process. The Arduino stands in as ...
 
@@ -74,14 +78,14 @@ or
 
 I/O:  
 
-00h - 03h   PIO  
+00h - 03h   PIO 
   00h         PORT A - ctrl  
   01h         PORT A - data  
   02h         PORT B - ctrl  
   03h         PORT B - data  
-80h -         available  
+80h - 87h   UART - TL16C550A  
 
-Since we have currently only a simple 1 bit address decoder (OR) on address pin 7 only two devices can be addressed. TODO: Use 74HCT238 to increase this number to 8.
+Using the 74HCT138 for address decoding we can address 8 devices (2 of the lines are still unused). The wiring is a little bit unusual here: A - A7, B - A6, C - A5
 
 ***Example code in this project***
 
@@ -98,3 +102,17 @@ Blinks bit 0 at port B if addresses are configured as above (optimized for, i.e.
 ***Documentation Links***
 
 Zilog User Manual: http://www.zilog.com/appnotes_download.php?FromPage=DirectLink&dn=UM0080&ft=User%20Manual&f=YUhSMGNEb3ZMM2QzZHk1NmFXeHZaeTVqYjIwdlpHOWpjeTk2T0RBdmRXMHdNRGd3TG5Ca1pnPT0=
+
+*serial.asm*
+
+Basic implementation of a serial communixcation. Minimal working (output) setup using 9600-8-N-1 configuration:
+
+To write the dividor set sets the communication speed we need to access the dividor registers, which is done by setting the most significant bit of the line control register to one.
+
+set register 83 to 80 (1000 0000)
+now set dividers
+set register 80 to 0ch (12 for 9600)
+set register 81 to 00h 
+now configure line control register
+set register 83 to 03h
+now start transmitting by setting value of register 80h
