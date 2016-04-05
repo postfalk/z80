@@ -122,3 +122,7 @@ now configure line control register
 set register 83 to 03h
 
 now start transmitting by setting value of register 80h
+
+###Explore
+
+http://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html
