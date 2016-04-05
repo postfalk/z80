@@ -1,4 +1,4 @@
-*My Z80 Computer
+#My Z80 Computer
 
 **Arduino driven Z80 development**
 
@@ -110,9 +110,15 @@ Basic implementation of a serial communixcation. Minimal working (output) setup 
 To write the dividor set sets the communication speed we need to access the dividor registers, which is done by setting the most significant bit of the line control register to one.
 
 set register 83 to 80 (1000 0000)
+
 now set dividers
+
 set register 80 to 0ch (12 for 9600)
+
 set register 81 to 00h 
+
 now configure line control register
+
 set register 83 to 03h
+
 now start transmitting by setting value of register 80h
