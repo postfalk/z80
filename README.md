@@ -83,7 +83,7 @@ I/O:
   01h         PORT A - data  
   02h         PORT B - ctrl  
   03h         PORT B - data  
-80h - 87h   UART - TL16C550A  
+80h - 87h   UART - TL16C550A, documentation: http://www.pci-card.com/TL16C550.pdf
 
 Using the 74HCT138 for address decoding we can address 8 devices (2 of the lines are still unused). The wiring is a little bit unusual here: A - A7, B - A6, C - A5
 
