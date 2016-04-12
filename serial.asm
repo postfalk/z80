@@ -6,7 +6,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-org 00000h
+org 08000h
 
 setup:              ld sp, 0ffffh       ; set stack pointer
                     ld hl, 00ff00h      ; begin page to store data
