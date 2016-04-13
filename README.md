@@ -127,7 +127,7 @@ To set the baud rate, we need to access the divisor registers, which is done by 
 
 ***Documentation Links***
 
-![Zilog User Manual] (http://www.zilog.com/appnotes_download.php?FromPage=DirectLink&dn=UM0080&ft=User%20Manual&f=YUhSMGNEb3ZMM2QzZHk1NmFXeHZaeTVqYjIwdlpHOWpjeTk2T0RBdmRXMHdNRGd3TG5Ca1pnPT0=)
+[Zilog User Manual] (www.zilog.com/manage_directlink.php?filepath=docs/z80/um0080)
 
 [CPM User Manual](http://www.cpm.z80.de/manuals/cpm3-usr.pdf)
 
