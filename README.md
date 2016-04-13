@@ -136,3 +136,5 @@ To set the baud rate, we need to access the divisor registers, which is done by 
 ###Explore
 
 http://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html
+
+[CPM 2.2 installation](http://cpuville.com/cpm_on_new_computer.html)
