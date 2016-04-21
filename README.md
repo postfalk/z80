@@ -138,3 +138,5 @@ To set the baud rate, we need to access the divisor registers, which is done by 
 http://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html
 
 [CPM 2.2 installation](http://cpuville.com/cpm_on_new_computer.html): This looks pretty reasonable. I like the idea to use an actual IDE hard disk and do not care about its compatibility outside the system. 
+
+[http://www.glynstore.com/content/docs/ftdi/DS_VDIP2.pdf]: Explore this option to get USB sticks and FAT32 going relatively easily and somewhat lame.
