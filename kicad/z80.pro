@@ -1,4 +1,4 @@
-update=Thu 28 Apr 2016 09:27:22 PM PDT
+update=Wed 04 May 2016 11:05:19 PM PDT
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,3 +59,5 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=Zilog
+LibName31=Oscillators
+LibName32=cmos_ieee
