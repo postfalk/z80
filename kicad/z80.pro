@@ -1,4 +1,4 @@
-update=Wed 04 May 2016 11:05:19 PM PDT
+update=Sun 15 May 2016 12:11:53 PM PDT
 version=1
 last_client=kicad
 [pcbnew]
@@ -27,7 +27,7 @@ NetIExt=net
 version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=/home/falk/Downloads/clock_oscillator_x014s
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -61,3 +61,4 @@ LibName29=valves
 LibName30=Zilog
 LibName31=Oscillators
 LibName32=cmos_ieee
+LibName33=xo-14s

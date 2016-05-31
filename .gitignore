@@ -1,3 +1,4 @@
 *.bin
 *_test*
 z80_code.h
+kicad/*.bak
