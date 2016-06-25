@@ -60,6 +60,10 @@ Example use:
 minipro -p X28C64 -w d88_rom.bin
 ````
 
+***RAM***
+
+http://ee-classes.usc.edu/ee459/library/datasheets/628128.pdf
+
 
 ***Current configuration***
 
