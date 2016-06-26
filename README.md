@@ -52,7 +52,7 @@ Install the project if you want to use this project to directly write XPROMS wit
 
 https://github.com/vdudouyt/
 
-Tested with XICOR 28C64. The python code below assumes this 8k by 8byte device. Change code accordingly for other devices or more flexible use.
+Tested with [XICOR 28C64] (https://www.jameco.com/Jameco/Products/ProdDS/74827.pdf). The python code below assumes this 8k by 8byte device. Change code accordingly for other devices or more flexible use.
 
 Example use:
 
