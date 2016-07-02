@@ -152,32 +152,6 @@ Text GLabel 9850 3800 0    60   Input ~ 0
 a14
 Text GLabel 9850 3900 0    60   Input ~ 0
 a15
-Text GLabel 6910 4070 0    60   Input ~ 0
-a0
-Text GLabel 6910 4170 0    60   Input ~ 0
-a1
-Text GLabel 6910 4270 0    60   Input ~ 0
-a2
-Text GLabel 6910 4370 0    60   Input ~ 0
-a3
-Text GLabel 6910 4470 0    60   Input ~ 0
-a4
-Text GLabel 6910 4570 0    60   Input ~ 0
-a5
-Text GLabel 6910 4670 0    60   Input ~ 0
-a6
-Text GLabel 6910 4770 0    60   Input ~ 0
-a7
-Text GLabel 6910 4870 0    60   Input ~ 0
-a8
-Text GLabel 6910 4970 0    60   Input ~ 0
-a9
-Text GLabel 6910 5070 0    60   Input ~ 0
-a10
-Text GLabel 6910 5170 0    60   Input ~ 0
-a11
-Text GLabel 6910 5270 0    60   Input ~ 0
-a12
 $Comp
 L VCC #PWR02
 U 1 1 57532AE0
@@ -257,9 +231,9 @@ F 3 "" H 4900 4630 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 760  3150 0    60   Input ~ 0
-a6
+a3
 Text GLabel 760  3350 0    60   Input ~ 0
-a7
+iorq
 Text GLabel 9850 5300 0    60   Input ~ 0
 iorq
 $Comp
@@ -286,7 +260,7 @@ F 3 "" H 3340 4670 50  0000 C CNN
 $EndComp
 Text GLabel 2740 4770 0    60   Input ~ 0
 reset
-Text GLabel 9850 6250 0    60   Input ~ 0
+Text GLabel 9850 6150 0    60   Input ~ 0
 reset
 Text GLabel 6910 3070 0    60   Input ~ 0
 mreq
@@ -302,39 +276,28 @@ U 1 1 5754484B
 P 2720 2900
 F 0 "U7" H 2820 3400 50  0000 C CNN
 F 1 "74LS138" H 2870 2351 50  0000 C CNN
-F 2 "Housings_DIP:DIP-14_W7.62mm" H 2720 2900 50  0000 C CNN
+F 2 "Housings_DIP:DIP-16_W7.62mm" H 2720 2900 50  0000 C CNN
 F 3 "" H 2720 2900 50  0000 C CNN
 	1    2720 2900
 	1    0    0    -1  
 $EndComp
 Text GLabel 2120 3150 0    60   Input ~ 0
-a5
-Text GLabel 2120 2750 0    60   Input ~ 0
 a4
+Text GLabel 2120 2750 0    60   Input ~ 0
+a7
 Text GLabel 2120 2650 0    60   Input ~ 0
-a3
+a6
 Text GLabel 2120 2550 0    60   Input ~ 0
-a2
+a5
 $Comp
-L VCC #PWR?
+L VCC #PWR04
 U 1 1 57545761
 P 2120 3050
-F 0 "#PWR?" H 2120 2900 50  0001 C CNN
+F 0 "#PWR04" H 2120 2900 50  0001 C CNN
 F 1 "VCC" H 2120 3200 50  0000 C CNN
 F 2 "" H 2120 3050 50  0000 C CNN
 F 3 "" H 2120 3050 50  0000 C CNN
 	1    2120 3050
-	1    0    0    -1  
-$EndComp
-$Comp
-L 7400 U6
-U 3 1 57546011
-P 4140 2650
-F 0 "U6" H 4140 2700 50  0000 C CNN
-F 1 "7400" H 4140 2550 50  0000 C CNN
-F 2 "Housings_DIP:DIP-14_W7.62mm" H 4140 2650 50  0000 C CNN
-F 3 "" H 4140 2650 50  0000 C CNN
-	3    4140 2650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -386,16 +349,53 @@ Wire Wire Line
 Wire Wire Line
 	2120 3250 1960 3250
 Wire Wire Line
-	3320 2550 3540 2550
-Wire Wire Line
-	3500 2550 3500 2750
-Wire Wire Line
-	3500 2750 3540 2750
-Connection ~ 3500 2550
-Wire Wire Line
-	4740 2650 4740 3620
-Wire Wire Line
-	4740 3620 2750 3620
-Wire Wire Line
 	2750 3620 2750 4000
+Wire Wire Line
+	3320 2550 3430 2550
+Wire Wire Line
+	3430 2550 3430 3620
+Wire Wire Line
+	3430 3620 2750 3620
+Text GLabel 8310 1270 2    60   Input ~ 0
+d0
+Text GLabel 8310 1570 2    60   Input ~ 0
+d1
+Text GLabel 8310 1470 2    60   Input ~ 0
+d2
+Text GLabel 8310 1370 2    60   Input ~ 0
+d3
+Text GLabel 8310 1670 2    60   Input ~ 0
+d4
+Text GLabel 8310 1770 2    60   Input ~ 0
+d5
+Text GLabel 8310 1870 2    60   Input ~ 0
+d6
+Text GLabel 8310 1970 2    60   Input ~ 0
+d7
+Text GLabel 6910 5270 0    60   Input ~ 0
+a12
+Text GLabel 6910 5170 0    60   Input ~ 0
+a11
+Text GLabel 6910 5070 0    60   Input ~ 0
+a10
+Text GLabel 6910 4970 0    60   Input ~ 0
+a9
+Text GLabel 6910 4870 0    60   Input ~ 0
+a8
+Text GLabel 6910 4770 0    60   Input ~ 0
+a7
+Text GLabel 6910 4670 0    60   Input ~ 0
+a6
+Text GLabel 6910 4570 0    60   Input ~ 0
+a5
+Text GLabel 6910 4470 0    60   Input ~ 0
+a4
+Text GLabel 6910 4370 0    60   Input ~ 0
+a3
+Text GLabel 6910 4270 0    60   Input ~ 0
+a2
+Text GLabel 6910 4170 0    60   Input ~ 0
+a1
+Text GLabel 6910 4070 0    60   Input ~ 0
+a0
 $EndSCHEMATC
