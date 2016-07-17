@@ -138,6 +138,23 @@ X VCC 14 -600 190 300 R 50 50 1 1 I
 ENDDRAW
 ENDDEF
 #
+# serial_bort_interface
+#
+DEF serial_bort_interface U 0 40 Y Y 1 F N
+F0 "U" 0 0 60 H V C CNN
+F1 "serial_bort_interface" 0 0 60 H V C CNN
+F2 "" 0 0 60 H V C CNN
+F3 "" 0 0 60 H V C CNN
+DRAW
+X GND 1 -250 350 200 R 50 50 1 1 U
+X CTS 2 -250 300 200 R 50 50 1 1 U
+X Vcc 3 -250 250 200 R 50 50 1 1 U
+X Rx 4 -250 200 200 R 50 50 1 1 U
+X Tx 5 -250 150 200 R 50 50 1 1 U
+X DTR_Reset 6 -250 100 200 R 50 50 1 1 U
+ENDDRAW
+ENDDEF
+#
 # z80pcb
 #
 DEF z80pcb U 0 40 Y Y 1 F N

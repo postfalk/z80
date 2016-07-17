@@ -8,6 +8,8 @@
 org 00000h
 
 setup:              ld sp, 0ffffh       ; set stack pointer
+                    ld bc, 0001h
+                    call wait           ; wait for reset finished
                     ld a, 080h          ; UART: initialize
                     out (083h), a       ; UART: enable access to the divisor regs
                     ld a, 0ch           ; UART: set divisor to 12, causes 9600 

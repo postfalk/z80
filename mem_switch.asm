@@ -9,7 +9,7 @@ org 0000h
 setup:              ld sp, 0ffffh ; set stack pointer
                 
 
-loop:               ld bc, 1000h
+loop:               ld bc, 010h
                     call wait
                     ld a, 0
                     out(000h), a
