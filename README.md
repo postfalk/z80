@@ -1,5 +1,35 @@
 #My Z80 Computer
 
+### Assembler software ####
+
+There is a Z80 assembler in the Ubuntu universe repos!!!
+
+```
+sudo apt-get install z80asm 
+```
+
+Make sure z80asm is in your executable path. There is also a de-assembler for binaries (z80dasm).
+
+I wrote a simple Python script to automate assembly.
+
+```
+python assemble.py -i test.asm
+```
+
+In order to review binary hex code install bless:
+
+```
+sudo apt-get install bless
+```
+
+Most software and examples are written in TASM, I found a compatible project still maintained called ZASM
+
+http://k1.spdns.de/Develop/Projects/zasm/Distributions/
+
+(Currently validating its usefulness)
+
+------------- Much of the below is now obsolete ------------------
+
 **Arduino driven Z80 development**
 
 The Arduino is gone now. Development is fun without it. However, the form factor is still there. Arduino could be used for debugging as needed.
@@ -24,26 +54,7 @@ A new idea is to use the Arduino as a simple IO device at the Z80 bus. At a 4Mhz
 
 ***Prerequisites***
 
-There is a Z80 assembler in the Ubuntu universe repos!!! If you are using Ubuntu you are all set for now.
 
-```
-sudo apt-get install z80asm 
-```
-
-Otherwise make sure z80asm is in your executable path. There is also a de-assembler for binaries (z80dasm).
-
-***Assemble and generate Arduino code***
-
-```
-python assemble.py -i test.asm
-```
-
-
-In order to review binary hex code install bless:
-
-```
-sudo apt-get install bless
-```
 
 ***EEPROM***
 
