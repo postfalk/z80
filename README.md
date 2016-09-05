@@ -26,6 +26,12 @@ Most software and examples are written in TASM, I found a compatible project sti
 
 http://k1.spdns.de/Develop/Projects/zasm/Distributions/
 
+CPM setup
+
+This page proved very useful
+
+http://cpuville.com/cpm_on_new_computer.html
+
 (Currently validating its usefulness)
 
 ------------- Much of the below is now obsolete ------------------
