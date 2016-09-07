@@ -2,3 +2,6 @@
 *_test*
 z80_code.h
 kicad/*.bak
+*.rom
+*.asm~
+*.lst
