@@ -21,7 +21,6 @@
 
 ; GENERAL EQUATES
 
-
 CTRLC   .EQU    03H             ; Control "C"
 CTRLG   .EQU    07H             ; Control "G"
 BKSP    .EQU    08H             ; Back space
@@ -157,10 +156,7 @@ COPY:   LD      A,(DE)          ; Get source
         CALL    PRNTCRLF        ; Output CRLF
         LD      (BUFFER+72+1),A ; Mark end of buffer
         LD      (PROGST),A      ; Initialise program area
-MSIZE:  
-        LD      HL,MYMSG
-        CALL    PRS
-        LD      HL,MEMMSG       ; Point to message
+MSIZE:  LD      HL,MEMMSG       ; Point to message
         CALL    PRS             ; Output "Memory size"
         CALL    PROMPT          ; Get input with '?'
         CALL    GETCHR          ; Get next character
@@ -181,10 +177,6 @@ MLOOP:  INC     HL              ; Next byte
         JP      SETTOP          ; Top of RAM found
 
 TSTMEM: CALL    ATOH            ; Get high memory into DE
-        ; PUSH HL
-        ; LD HL,TESTMESSAGE
-        ; PRINTL
-        ; POP HL
         OR      A               ; Set flags on last byte
         JP      NZ,SNERR        ; ?SN Error if bad character
         EX      DE,HL           ; Address into HL
@@ -233,9 +225,7 @@ SIGNON: .BYTE   "Z80 BASIC Ver 4.7b",CR,LF
         .BYTE   "Copyright ",40,"C",41
         .BYTE   " 1978 by Microsoft",CR,LF,0,0
 
-MEMMSG: .BYTE   "Memory toppppp",0
-
-MYMSG:  .BYTE   "Whats going on",0
+MEMMSG: .BYTE   "Memory top",0
 
 ; FUNCTION ADDRESS TABLE
 
@@ -523,7 +513,6 @@ INITAB: JP      WARMST          ; Warm start jump
 INITBE:                         
 
 ; END OF INITIALISATION TABLE ---------------------------------------------------
-
 
 ERRMSG: .BYTE   " Error",0
 INMSG:  .BYTE   " in ",0
@@ -4347,6 +4336,3 @@ TSTBIT: PUSH    AF              ; Save bit mask
 
 OUTNCR: CALL    OUTC            ; Output character in A
         JP      PRNTCRLF        ; Output CRLF
-
-
-TESTMESSAGE .BYTE "WHAT'S GOING ON."
