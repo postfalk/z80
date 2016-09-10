@@ -2,13 +2,14 @@
 ;   Program that tests RAM and outputs    ;
 ;   faulty address                        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-UARTBaseAddress .EQU     80H
+UARTBASE        .EQU     80H
 TEMPSTACK       .EQU     $FFFF
+MEMSTART        .EQU     $3f01           ; Start of memory to scan
+MEMEND          .EQU     $F000           ; End of memory to scan
 
 CR              .EQU     0DH
 LF              .EQU     0AH
 CS              .EQU     0CH             ; Clear screen
-
 
                 .ORG $0000
 
@@ -89,9 +90,10 @@ SETUP:          LD HL,TEMPSTACK          ; Temp stack
                 out (081h), a
                 ld a, 03h                ; set serial mode to 8-N-1
                 out (083h), a
-                LD        HL,SIGNON      ; Sign-on message
-                CALL      PRINT          ; print string
-                JP        LOOP
+                LD HL,SIGNON             ; Sign-on message
+                LD A, (HL)
+                CALL PRINT               ; print string
+                JP LOOP
 
 output_pres:    INC A
                 LD HL,HEX
@@ -142,23 +144,37 @@ TESTMEM:        LD HL, BC
                 SUB 055h
                 JP NZ, ERROR
                 RET
-ERROR:          LD HL, MEMERR
+ERROR:          call parse_hex
+                LD HL, MEMERR
                 call PRINT
-                RET
-
-
-LOOP:           LD BC, 0ff01h
-loop2:          call parse_hex
-                DEC BC
-                call TESTMEM
                 LD HL, NEWLINE
                 LD A, (HL)
                 call PRINT
-                JP loop2
+                RET
 
-SIGNON:         .BYTE     CS,"Hello World",CR,LF,0
+LOOP:           ld bc, MEMSTART
+loop2:          ld a, c
+                dec a
+                jp nz, dontprint
+                call parse_hex
+                ld hl, NEWLINE
+                ld a, (hl)
+                call PRINT
+dontprint:      ld hl, MEMEND
+                sbc hl, bc
+                jp z, endtest1
+                inc bc
+                call TESTMEM
+                jp loop2
+endtest1:        ld hl, ENDMSG
+                ld a, (hl)
+                call PRINT
+hangout:        jp hangout
+
+SIGNON:         .BYTE     CS,"Falk's simple memory test",CR,LF,0
 HEX:            .BYTE    "_0123456789abcdef"
 NEWLINE:        .BYTE    CR,LF,0
 MEMERR:         .BYTE    " faulty memory or rom",0
+ENDMSG:         .BYTE    "Test ended",CR,LF,0
 
 .end

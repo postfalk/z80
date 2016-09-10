@@ -71,107 +71,39 @@ RST18            JP      CONST
 ;                 .ORG     0038H
 ; RST38            JR      serialInt
 
-;------------------------------------------------------------------------------
-; serialInt:      PUSH     AF
-;                PUSH     HL
-;
-;                IN       A,($80)
-;                AND      $01             ; Check if interupt due to read buffer full
-;                JR       Z,rts0          ; if not, ignore
-;
-;                IN       A,($81)
-;                PUSH     AF
-;                LD       A,(serBufUsed)
-;                CP       SER_BUFSIZE     ; If full then ignore
-;                JR       NZ,notFull
-;                POP      AF
-;                JR       rts0
-
-;notFull:        LD       HL,(serInPtr)
-;                INC      HL
-;                LD       A,L             ; Only need to check low byte because buffer<256 bytes
-;                CP       (serBuf+SER_BUFSIZE) & $FF
-;                JR       NZ, notWrap
-;                LD       HL,serBuf
-;notWrap:        LD       (serInPtr),HL
-;                POP      AF
-;                LD       (HL),A
-;                LD       A,(serBufUsed)
-;                INC      A
-;                LD       (serBufUsed),A
-;                CP       SER_FULLSIZE
-;                JR       C,rts0
-;                LD       A,RTS_HIGH
-;                OUT      ($80),A
-;rts0:           POP      HL
-;                POP      AF
-;                EI
-;                RETI
 
 ;------------------------------------------------------------------------------
-CONIN:                                    ; implement CONIN
-                in a, (085h)  ; read line status register
+; Simple implementation of CPM'S CONIN
+
+CONIN:          in a, (085h)  ; read line status register
                 and 001h      ; check data ready
                 jr z, CONIN   ; wait until data ready=1
                 in a, (080h)
                 and 7fh       ;strip parity bit
                 ret
 
-; waitForChar:    LD       A,(serBufUsed)
-;                CP       $00
-;                JR       Z, waitForChar
-;                PUSH     HL
-;                LD       HL,(serRdPtr)
-;                INC      HL
-;                LD       A,L             ; Only need to check low byte becasuse buffer<256 bytes
-;                CP       (serBuf+SER_BUFSIZE) & $FF
-;                JR       NZ, notRdWrap
-;                LD       HL,serBuf
-;notRdWrap:      DI
-;                LD       (serRdPtr),HL
-;                LD       A,(serBufUsed)
-;                DEC      A
-;                LD       (serBufUsed),A
-;                CP       SER_EMPTYSIZE
-;                JR       NC,rts1
-;                LD       A,RTS_LOW
-;                OUT      ($80),A
-;rts1:
-;                LD       A,(HL)
-;                EI
-;                POP      HL
-;                RET; Char ready in A
-;                 LD      A, $00
-;                 RET
-
 ;------------------------------------------------------------------------------
-CONOUT:                                    ; Implement CONIN
-                push af
+; Simple implementation of CPM'S CONOUT
+
+CONOUT:         push af
 serialx:        in a, (085h)        ; make sure transmitter reg is
                 and 040h            ; empty
                 jr z, serialx
-                ; ld a, c
+                ld a, c
                 pop af
                 out (080h), a
                 ret
-;                PUSH     AF              ; Store character
-; conout1:        IN       A,($80)         ; Status byte       
-;                BIT      1,A             ; Set Zero flag if still transmitting character       
-;                JR       Z,conout1       ; Loop until flag signals ready
-;                POP      AF              ; Retrieve character
-;                OUT      ($81),A         ; Output the character
-                 RET
 
 ;------------------------------------------------------------------------------
-CONST:          
-                in a, (085h)  ; read line status register
+; Simple Implementation of CPM'S CONST
+
+CONST:          in a, (085h)  ; read line status register
                 and 001h      ; check data ready
                 jp z, NOCHAR   ; wait until data ready=1
                 ld a, 0ffh
                 ret
-NOCHAR:         ld a,00h
+NOCHAR:         ld a, 00h
                 ret
-
 
 ;------------------------------------------------------------------------------
 PRINTL:         LD       A,(HL)          ; Get character
@@ -181,12 +113,12 @@ PRINTL:         LD       A,(HL)          ; Get character
                 INC      HL              ; Next Character
                 JR       PRINTL           ; Continue until $00
                 RET
+
 ;------------------------------------------------------------------------------
-SETUP:
-                LD        HL,TEMPSTACK    ; Temp stack
-                LD        SP,HL           ; Set up a temporary stack
+SETUP:          LD HL,TEMPSTACK    ; Temp stack
+                LD SP,HL           ; Set up a temporary stack
                 ld bc, 0001h
-                call waitx           ; wait for reset finished
+                call waitx          ; wait for UART reset finished
                 ld a, 080h          ; initialize serial interface
                 out (083h), a       ; enable access to the divisor regs
                 ld a, 0ch           ; set divisor to 12, causes 9600 
@@ -195,18 +127,9 @@ SETUP:
                 out (081h), a
                 ld a, 03h           ; set serial mode to 8-N-1
                 out (083h), a
-;               LD        HL,serBuf
-;               LD        (serInPtr),HL
-;               LD        (serRdPtr),HL
-;               XOR       A               ;0 to accumulator
-;               LD        (serBufUsed),A
-;               LD        A,RTS_LOW
-;               OUT       ($80),A         ; Initialise ACIA
-;               IM        1
-;               EI
-               LD        HL,SIGNON1      ; Sign-on message
-               CALL      PRINTL           ; Output string
-               JP       $0150
+                LD        HL,SIGNON1      ; Sign-on message
+                CALL      PRINTL           ; Output string
+                JP       $0150
 ;               LD        A,(basicStarted); Check the BASIC STARTED flag
 ;               CP        'Y'             ; to see if this is power-up
                ; JR        NZ,COLDSTART    ; If not BASIC started then always do cold start
@@ -235,7 +158,6 @@ CHECKWARM:
                RST       08H
                JP        $0153           ; Start BASIC WARM
 
-
 ; set relative wait time in bc
 waitx:              push de             ; protect affected registers
                     push af
@@ -251,7 +173,6 @@ inner:              dec de
                     pop af
                     pop de
                     ret
-
 
 SIGNON1:       .BYTE     CS
                .BYTE     "Z80 SBC By Grant Searle",CR,LF,0
