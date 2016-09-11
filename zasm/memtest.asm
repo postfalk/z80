@@ -142,8 +142,19 @@ TESTMEM:        LD HL, BC
                 LD (HL), 055h
                 LD A, (HL)
                 SUB 055h
-                JP NZ, ERROR
+                CALL NZ, ERROR
                 RET
+
+TESTMEM2:       LD HL, BC
+                LD A, (HL)
+                SUB 055h
+                CALL NZ, ERROR
+                LD (HL), 0aah
+                LD A, (HL)
+                SUB 0aah
+                CALL NZ, ERROR
+                RET
+
 ERROR:          call parse_hex
                 LD HL, MEMERR
                 call PRINT
@@ -166,7 +177,21 @@ dontprint:      ld hl, MEMEND
                 inc bc
                 call TESTMEM
                 jp loop2
-endtest1:        ld hl, ENDMSG
+endtest1:       ld bc, MEMSTART
+loop3:          ld a, c
+                dec a
+                jp nz, dontprint2
+                call parse_hex
+                ld hl, NEWLINE
+                ld a, (hl)
+                call PRINT
+dontprint2:     ld hl, MEMEND
+                sbc hl, bc
+                jp z, endtest2
+                inc bc
+                call TESTMEM2
+                jp loop3
+endtest2:       ld hl, ENDMSG
                 ld a, (hl)
                 call PRINT
 hangout:        jp hangout

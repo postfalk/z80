@@ -5,3 +5,12 @@ kicad/*.bak
 *.rom
 *.asm~
 *.lst
+*.exe
+*.obj
+*.tab
+*.bat
+*.EXE
+*.BAT
+*.TAB
+*.BAT
+*.BIN
