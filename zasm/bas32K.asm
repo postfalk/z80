@@ -37,7 +37,7 @@ DEL     .EQU    7FH             ; Delete
 
 ; BASIC WORK SPACE LOCATIONS
 
-WRKSPC  .EQU    7066H             ; BASIC Work space
+WRKSPC  .EQU    8045H             ; BASIC Work space
 USR     .EQU    WRKSPC+3H           ; "USR (x)" jump
 OUTSUB  .EQU    WRKSPC+6H           ; "OUT p,n"
 OTPORT  .EQU    WRKSPC+7H           ; Port (p)

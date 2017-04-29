@@ -5,7 +5,7 @@
 ;                                                                        ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-org 08000h 
+org 00000h 
 
 setup:              ld sp, 0ffffh       ; set stack pointer
                     ld a, 080h          ; UART: initialize

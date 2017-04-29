@@ -24,12 +24,12 @@ SER_EMPTYSIZE   .EQU     5
 RTS_HIGH        .EQU     0D6H
 RTS_LOW         .EQU     096H
 
-serBuf          .EQU     $2000
+serBuf          .EQU     $8000
 serInPtr        .EQU     serBuf+SER_BUFSIZE
 serRdPtr        .EQU     serInPtr+2
 serBufUsed      .EQU     serRdPtr+2
 basicStarted    .EQU     serBufUsed+1
-TEMPSTACK       .EQU     $20ED ; Top of BASIC line input buffer so is "free ram" when BASIC resets
+TEMPSTACK       .EQU     $80ED ; Top of BASIC line input buffer so is "free ram" when BASIC resets
 
 CR              .EQU     0DH
 LF              .EQU     0AH
@@ -84,7 +84,7 @@ serialInt:      PUSH     AF
 
 notFull:        LD       HL,(serInPtr)
                 INC      HL
-                LD       A,L             ; Only need to check low byte because buffer<256 bytes
+                LD       A,L             ; Only need to check low byte becasuse buffer<256 bytes
                 CP       (serBuf+SER_BUFSIZE) & $FF
                 JR       NZ, notWrap
                 LD       HL,serBuf

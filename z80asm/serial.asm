@@ -19,8 +19,11 @@ setup:              ld sp, 0ffffh       ; set stack pointer
                     out (081h), a
                     ld a, 03h           ; set serial mode to 8-N-1
                     out (083h), a
+                    ld a, 080h
+                    out (080h), a
 
-loop:               ld hl, text
+loop:               ld hl, 00ff00h
+                    ld hl, text
                     call print
                     jp loop             ; just hanging out here for now
 

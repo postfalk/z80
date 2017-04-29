@@ -253,7 +253,7 @@ inner:              dec de
                     ret
 
 
-#include "basic.asm"
+#include "bas32K.asm"
 
 SIGNON1:       .BYTE     CS
                .BYTE     "Z80 SBC By Grant Searle",CR,LF,0
