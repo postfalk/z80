@@ -1,3 +1,12 @@
+## Recent Bring-Up Notes
+
+See [BASIC_DEBUG_2026-04-11.md](./BASIC_DEBUG_2026-04-11.md) for a summary of:
+
+- BASIC workspace/RAM mapping fixes
+- toolchain findings (`zasm` vs `z80asm`)
+- UART and RAM smoke-test ROMs
+- current diagnosis of the remaining BASIC startup issue
+
 #My Z80 Computer
 
 ### Assembler software ####
