@@ -206,6 +206,8 @@ SETUP:
 ;               EI
                LD        HL,SIGNON1      ; Sign-on message
                CALL      PRINTL           ; Output string
+               LD        A,'J'
+               RST       08H
                JP       $0150
 ;               LD        A,(basicStarted); Check the BASIC STARTED flag
 ;               CP        'Y'             ; to see if this is power-up
@@ -253,7 +255,7 @@ inner:              dec de
                     ret
 
 
-#include "bas32K.asm"
+#include "basic.asm"
 
 SIGNON1:       .BYTE     CS
                .BYTE     "Z80 SBC By Grant Searle",CR,LF,0

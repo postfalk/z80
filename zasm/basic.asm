@@ -37,7 +37,7 @@ DEL     .EQU    7FH             ; Delete
 
 ; BASIC WORK SPACE LOCATIONS
 
-WRKSPC  .EQU    7066H             ; BASIC Work space
+WRKSPC  .EQU    8045H             ; BASIC Work space
 USR     .EQU    WRKSPC+3H           ; "USR (x)" jump
 OUTSUB  .EQU    WRKSPC+6H           ; "OUT p,n"
 OTPORT  .EQU    WRKSPC+7H           ; Port (p)
@@ -132,6 +132,8 @@ COLD:   JP      STARTB          ; Jump for cold start
 WARM:   JP      WARMST          ; Jump for warm start
 STARTB: 
         LD      IX,0            ; Flag cold start
+        LD      A,'S'
+        RST     08H
         JP      CSTART          ; Jump to initialise
 
         .WORD   DEINT           ; Get integer -32768 to 32767
@@ -140,9 +142,13 @@ STARTB:
 
 CSTART: LD      HL,WRKSPC       ; Start of workspace RAM
         LD      SP,HL           ; Set up a temporary stack
+        LD      A,'C'
+        RST     08H
         JP      INITST          ; Go to initialise
 
 INIT:   LD      DE,INITAB       ; Initialise workspace
+        LD      A,'I'
+        RST     08H
         LD      B,INITBE-INITAB+3; Bytes to copy
         LD      HL,WRKSPC       ; Into workspace RAM
 COPY:   LD      A,(DE)          ; Get source
@@ -151,12 +157,18 @@ COPY:   LD      A,(DE)          ; Get source
         INC     DE              ; Next source
         DEC     B               ; Count bytes
         JP      NZ,COPY         ; More to move
+        LD      A,'Y'
+        RST     08H
         LD      SP,HL           ; Temporary stack
         CALL    CLREG           ; Clear registers and stack
+        LD      A,'R'
+        RST     08H
         CALL    PRNTCRLF        ; Output CRLF
         LD      (BUFFER+72+1),A ; Mark end of buffer
         LD      (PROGST),A      ; Initialise program area
 MSIZE:  LD      HL,MEMMSG       ; Point to message
+        LD      A,'M'
+        RST     08H
         CALL    PRS             ; Output "Memory size"
         CALL    PROMPT          ; Get input with '?'
         CALL    GETCHR          ; Get next character
@@ -189,6 +201,8 @@ TSTMEM: CALL    ATOH            ; Get high memory into DE
         JP      NZ,MSIZE        ; Ask again if no RAM
 
 SETTOP: DEC     HL              ; Back one byte
+        LD      A,'T'
+        RST     08H
         LD      DE,STLOOK-1     ; See if enough RAM
         CALL    CPDEHL          ; Compare DE with HL
         JP      C,MSIZE         ; Ask again if not enough RAM
@@ -197,6 +211,8 @@ SETTOP: DEC     HL              ; Back one byte
         ADD     HL,DE           ; Allocate string space
         LD      (STRSPC),HL     ; Save string space
         CALL    CLRPTR          ; Clear program area
+        LD      A,'P'
+        RST     08H
         LD      HL,(STRSPC)     ; Get end of memory
         LD      DE,0-17         ; Offset for free bytes
         ADD     HL,DE           ; Adjust HL
@@ -208,14 +224,26 @@ SETTOP: DEC     HL              ; Back one byte
         SBC     A,D             ; Adjust it
         LD      H,A             ; Re-save
         PUSH    HL              ; Save bytes free
+        LD      A,'B'
+        RST     08H
         LD      HL,SIGNON       ; Sign-on message
         CALL    PRS             ; Output string
+        LD      A,'b'
+        RST     08H
         POP     HL              ; Get bytes free back
+        LD      A,'N'
+        RST     08H
         CALL    PRNTHL          ; Output amount of free memory
+        LD      A,'n'
+        RST     08H
         LD      HL,BFREE        ; " Bytes free" message
         CALL    PRS             ; Output string
+        LD      A,'F'
+        RST     08H
 
 WARMST: LD      SP,STACK        ; Temporary stack
+        LD      A,'W'
+        RST     08H
 BRKRET: CALL    CLREG           ; Clear registers and stack
         JP      PRNTOK          ; Go to get command line
 
